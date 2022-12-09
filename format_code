@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ -z $1 ]; then
+    EXEC_PATH=$PWD
+else
+    EXEC_PATH=$1
+fi
+
+echo "Removing whitespace"
+# remove trailing whitespace
+find $EXEC_PATH -type f \( -iname "*.hpp" -or -iname "*.h" -or -iname "*.c" -or -iname "*.cpp" \) -not -path "*/import/*" -not -path "*/build/*" | xargs sed -e 's/[[:blank:]]\+$//' -i
+
+echo "Formatting code"
+# format source code
+find $EXEC_PATH -type f \( -iname "*.hpp" -or -iname "*.h" -or -iname "*.c" -or -iname "*.cpp" \) -not -path "*/import/*" -not -path "*/build/*" | xargs clang-format -i
